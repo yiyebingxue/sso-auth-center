@@ -14,7 +14,7 @@
           <img
               :src="item.sysIcon"
               class="image"
-              alt="测试测试"
+              alt="省心亲子"
               @click="clickPlatformMgmt(item)"
           >
           <div style="padding: 15px;" @click="clickPlatformMgmt(item)">

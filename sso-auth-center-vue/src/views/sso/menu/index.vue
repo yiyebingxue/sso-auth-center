@@ -366,7 +366,7 @@ export default {
         children: node.children
       }
     },
-    //查询菜单下拉树结构
+    // 查询菜单下拉树结构
     getMenuOptionTree() {
       listMenuOptionTree(this.queryParams).then(response => {
         this.menuOptions = []

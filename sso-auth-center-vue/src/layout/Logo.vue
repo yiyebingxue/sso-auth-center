@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '小强认证中心',
+      title: '省心亲子',
       logo: require('@/assets/logo/logo.png')
     }
   },

@@ -47,8 +47,8 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright ( @程序员小强 ） All Rights Reserved. 博客: <a href="https://blog.csdn.net/qq_38011415"
-                                                         target="_blank" style="color:#20a0ff;">传送门</a></span>
+      <span>Copyright ( @互通科技有限公司 ） All Rights Reserved. 备注: <a href="#"
+                                                         target="_blank" style="color:#20a0ff;">测试版本</a></span>
     </div>
   </div>
 </template>
@@ -70,7 +70,7 @@ export default {
       }
     }
     return {
-      title: '小强统一认证中心',
+      title: '省心亲子管理系统',
       captchaImageUrl: '',
       loginForm: {
         requestId: '',
@@ -177,7 +177,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../../assets/image/login-background.jpg");
+  background-image: url("../../assets/image/login-background1.jpg");
   background-size: cover;
 }
 

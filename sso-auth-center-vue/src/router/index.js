@@ -211,6 +211,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/sxqz',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'sxqzMgmt',
+        component: () => import('@/views/sxqz/sxqzMgmt'),
+        meta: { title: '省心亲子', icon: '#' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
