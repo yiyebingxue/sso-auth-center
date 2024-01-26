@@ -4,12 +4,16 @@
       <el-row :gutter="10">
         <div>
           <div style="float: right">
-            <el-button type="primary" size="mini" @click="updateSystem" v-hasPermission="['system:update']">修改
+            <el-button v-hasPermission="['system:update']" type="primary" size="mini" @click="updateSystem">修改
             </el-button>
-            <el-button type="success" size="mini" @click="updateSecret" v-hasPermission="['system:updateSecret']">修改秘钥
+            <el-button v-hasPermission="['system:updateSecret']" type="success" size="mini" @click="updateSecret">修改秘钥
             </el-button>
-            <el-button type="warning" size="mini" @click="gotoUserSystemMgmt"
-                       v-hasPermission="['systemMgmt:updateSystemMgmt']">系统管理员
+            <el-button
+              v-hasPermission="['systemMgmt:updateSystemMgmt']"
+              type="warning"
+              size="mini"
+              @click="gotoUserSystemMgmt"
+            >系统管理员
             </el-button>
           </div>
         </div>
@@ -30,8 +34,8 @@
         <el-col :md="10" :lg="8">
           <el-card shadow="never" style="border: none">
             状态 :
-            <el-tag type="success" v-if="detailData.status===0" size="mini">正常</el-tag>
-            <el-tag type="danger" v-if="detailData.status===1" size="mini">停用</el-tag>
+            <el-tag v-if="detailData.status===0" type="success" size="mini">正常</el-tag>
+            <el-tag v-if="detailData.status===1" type="danger" size="mini">停用</el-tag>
           </el-card>
         </el-col>
         <el-col :md="8" :lg="8">
@@ -79,16 +83,17 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-row :gutter="10" v-hasPermission="['system:updateSecret']">
-        <el-col :md="8" :lg="8" v-if="detailData.publicKey!==''">
+      <el-row v-hasPermission="['system:updateSecret']" :gutter="10">
+        <el-col v-if="detailData.publicKey!==''" :md="8" :lg="8">
           <el-card shadow="never" style="border: none" class="cardText">
             验签公钥 :
             <el-popover
-                placement="top-start"
-                title=""
-                width="400"
-                trigger="hover"
-                :content="detailData.publicKey">
+              placement="top-start"
+              title=""
+              width="400"
+              trigger="hover"
+              :content="detailData.publicKey"
+            >
               <el-button slot="reference" size="small" style="border: none;color: #20a0ff">查看</el-button>
             </el-popover>
           </el-card>
@@ -109,14 +114,14 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="系统名称" prop="sysName">
-              <el-input v-model="updateForm.sysName" placeholder="请输入系统名称"/>
+              <el-input v-model="updateForm.sysName" placeholder="请输入系统名称" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="系统编码" prop="sysCode">
-              <el-input readonly="true" disabled="true" v-model="updateForm.sysCode" placeholder="请输入系统编码"/>
+              <el-input v-model="updateForm.sysCode" readonly="true" disabled="true" placeholder="请输入系统编码" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -131,16 +136,20 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="显示排序" prop="sortNum">
-              <el-input-number v-model="updateForm.sortNum" controls-position="right" :min="0"/>
+              <el-input-number v-model="updateForm.sortNum" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="系统环境" prop="sysEnv">
-              <el-select v-model="updateForm.sysEnv" placeholder="系统环境"
-                         size="small" style="width: 100px">
-                <el-option :key="0" label="测试" :value="0"/>
-                <el-option :key="1" label="beta" :value="1"/>
-                <el-option :key="2" label="生产" :value="2"/>
+              <el-select
+                v-model="updateForm.sysEnv"
+                placeholder="系统环境"
+                size="small"
+                style="width: 100px"
+              >
+                <el-option :key="0" label="测试" :value="0" />
+                <el-option :key="1" label="beta" :value="1" />
+                <el-option :key="2" label="生产" :value="2" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -148,18 +157,25 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="系统地址" prop="sysUrl">
-              <el-input v-model="updateForm.sysUrl" type="textarea"
-                        :autosize="{ minRows: 1, maxRows: 5}"
-                        placeholder="请输入系统跳转地址" style="width: 400px"/>
+              <el-input
+                v-model="updateForm.sysUrl"
+                type="textarea"
+                :autosize="{ minRows: 1, maxRows: 5}"
+                placeholder="请输入系统跳转地址"
+                style="width: 400px"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="remarks">
-              <el-input v-model="updateForm.remarks" type="textarea"
-                        :autosize="{ minRows: 2, maxRows: 5}"
-                        placeholder="请输入内容"></el-input>
+              <el-input
+                v-model="updateForm.remarks"
+                type="textarea"
+                :autosize="{ minRows: 2, maxRows: 5}"
+                placeholder="请输入内容"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -185,20 +201,28 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="24" v-if="updateSecretForm.signType===1">
+          <el-col v-if="updateSecretForm.signType===1" :span="24">
             <el-form-item label="秘钥" prop="publicKey">
-              <el-input v-model="updateSecretForm.publicKey"
-                        :autosize="{ minRows: 2, maxRows: 10}"
-                        size="small" type="textarea" placeholder="请输入MD5加密秘钥"></el-input>
+              <el-input
+                v-model="updateSecretForm.publicKey"
+                :autosize="{ minRows: 2, maxRows: 10}"
+                size="small"
+                type="textarea"
+                placeholder="请输入MD5加密秘钥"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="24" v-if="updateSecretForm.signType!==1">
+          <el-col v-if="updateSecretForm.signType!==1" :span="24">
             <el-form-item label="验签公钥" prop="publicKey">
-              <el-input v-model="updateSecretForm.publicKey"
-                        :autosize="{ minRows: 2, maxRows: 10}"
-                        size="small" type="textarea" placeholder="请输入验签公钥"></el-input>
+              <el-input
+                v-model="updateSecretForm.publicKey"
+                :autosize="{ minRows: 2, maxRows: 10}"
+                size="small"
+                type="textarea"
+                placeholder="请输入验签公钥"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -218,20 +242,19 @@
 
 <script>
 import { getDetailBySysCode, updateSecret, updateSystem } from '@/api/system'
-import { isExternal } from '@/utils/validate'
 import { hasSomePermission } from '@/utils/admin-util'
 
 export default {
   inject: ['reloadLeftMenu'],
   data() {
     return {
-      //是否显示弹出层
+      // 是否显示弹出层
       openUpdateSystem: false,
       openUpdateSecret: false,
-      //修改平台权限
+      // 修改平台权限
       hasUpdatePermission: false,
       title: '',
-      //查询参数
+      // 查询参数
       queryParams: {
         sysCode: null
       },
@@ -239,7 +262,7 @@ export default {
       updateForm: {},
       // 表单JSON内容
       oldUpdateFormJson: '',
-      //修改秘钥表单
+      // 修改秘钥表单
       updateSecretForm: {},
       // 表单JSON内容
       oldUpdateSecretFormJson: '',
@@ -267,7 +290,7 @@ export default {
           { max: 200, message: '最大长度 200 个字符', trigger: 'blur' }
         ]
       },
-      //修改秘钥表单校验
+      // 修改秘钥表单校验
       rulesSecret: {
         signType: [{ required: true, message: '签名类型不能为空', trigger: 'blur' }],
         publicKey: [{ max: 2048, message: '最大长度 2048 个字符', trigger: 'blur' }]
@@ -275,17 +298,20 @@ export default {
     }
   },
   created() {
-    //刷新左侧菜单栏
+    // 刷新左侧菜单栏
     this.reloadLeftMenu()
     this.hasUpdatePermission = hasSomePermission('system:update')
     this.targetSysCode = sessionStorage.getItem('targetSysCode')
-    if (this.targetSysCode == null || '' === this.targetSysCode) {
+    if (this.targetSysCode == null || this.targetSysCode === '') {
       this.$router.push({ path: '/platformMgmt/index' })
       return
     }
     this.targetSysName = sessionStorage.getItem('targetSysName')
     this.queryParams.sysCode = this.targetSysCode
     this.getDetail()
+  },
+  mounted() {
+
   },
   methods: {
     getDetail() {
@@ -307,7 +333,7 @@ export default {
       this.updateForm.remarks = this.detailData.remarks
       this.title = '修改平台信息'
       this.openUpdateSystem = true
-      //记录旧值
+      // 记录旧值
       this.oldUpdateFormJson = JSON.stringify(this.updateForm)
     },
     updateSecret() {
@@ -320,10 +346,10 @@ export default {
       this.updateSecretForm.publicKey = this.detailData.publicKey
       this.title = '修改' + this.detailData.sysName + '平台秘钥'
       this.openUpdateSecret = true
-      //记录旧值
+      // 记录旧值
       this.oldUpdateSecretFormJson = JSON.stringify(this.updateSecretForm)
     },
-    //修改平台提交
+    // 修改平台提交
     submitUpdateForm() {
       this.$refs['updateForm'].validate(valid => {
         if (valid) {
@@ -343,9 +369,9 @@ export default {
         }
       })
     },
-    //修改系统编码或系统名称后-修改sessionStorage
+    // 修改系统编码或系统名称后-修改sessionStorage
     restSysStorage(form) {
-      if (undefined === form || null === form) {
+      if (undefined === form || form === null) {
         return
       }
       this.targetSysCode = sessionStorage.getItem('targetSysCode')
@@ -358,7 +384,7 @@ export default {
       sessionStorage.setItem('targetSysCode', form.sysCode)
       sessionStorage.setItem('targetSysName', form.sysName)
     },
-    //修改秘钥提交
+    // 修改秘钥提交
     submitUpdateSecretForm() {
       this.$refs['updateSecretForm'].validate(valid => {
         if (valid) {
@@ -368,13 +394,13 @@ export default {
             return
           }
           this.$confirm(
-              '若已在使用,请谨慎操作,是否继续?',
-              '危险操作',
-              {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }
+            '若已在使用,请谨慎操作,是否继续?',
+            '危险操作',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }
           ).then(() => {
             return this.handleUpdateSecretForm()
           }).catch(function() {
@@ -382,7 +408,7 @@ export default {
         }
       })
     },
-    //系统用户操作
+    // 系统用户操作
     gotoUserSystemMgmt(row) {
       this.$router.push({
         path: '/systemMgmt/index',
@@ -390,16 +416,16 @@ export default {
       })
     },
     changeSignType() {
-      //更改签名类型为 - > 无签名
+      // 更改签名类型为 - > 无签名
       if (this.updateSecretForm.signType === 0 && this.updateSecretForm.publicKey != null) {
         this.$confirm(
-            '已存在签名,更改签名类型将会清除原先的签名,是否继续?',
-            '危险操作',
-            {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }
+          '已存在签名,更改签名类型将会清除原先的签名,是否继续?',
+          '危险操作',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }
         ).then(() => {
           this.updateSecretForm.publicKey = null
         }).catch(function() {
@@ -407,7 +433,6 @@ export default {
       }
     },
     handleUpdateSecretForm() {
-
       updateSecret(this.updateSecretForm).then(response => {
         if (response.code === 200) {
           this.openUpdateSecret = false
@@ -441,9 +466,6 @@ export default {
       this.resetForm('updateForm')
       this.resetForm('updateSecretForm')
     }
-  },
-  mounted() {
-
   }
 }
 </script>

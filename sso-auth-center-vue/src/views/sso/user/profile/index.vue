@@ -8,18 +8,18 @@
           </div>
           <div>
             <div class="text-center">
-              <userAvatar :user="user"/>
+              <userAvatar :user="user" />
             </div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">
                 登录名
                 <div class="pull-right">{{ user.username }}</div>
               </li>
-              <li class="list-group-item" v-if="user.nickName!==''">
+              <li v-if="user.nickName!==''" class="list-group-item">
                 用户昵称
                 <div class="pull-right">{{ user.nickName }}</div>
               </li>
-              <li class="list-group-item" v-if="user.realName!==''">
+              <li v-if="user.realName!==''" class="list-group-item">
                 真实姓名
                 <div class="pull-right">{{ user.realName }}</div>
               </li>
@@ -31,11 +31,11 @@
                 邮箱
                 <div class="pull-right">{{ user.email }}</div>
               </li>
-              <li class="list-group-item" v-if="user.loginIp!=='' && user.loginIp!==null">
+              <li v-if="user.loginIp!=='' && user.loginIp!==null" class="list-group-item">
                 最后登录IP
                 <div class="pull-right">{{ user.loginIp }}</div>
               </li>
-              <li class="list-group-item" v-if="user.lastLoginTime!=='' && user.lastLoginTime!==null">
+              <li v-if="user.lastLoginTime!=='' && user.lastLoginTime!==null" class="list-group-item">
                 最后登录时间
                 <div class="pull-right">{{ user.lastLoginTime }}</div>
               </li>
@@ -58,10 +58,10 @@
           </div>
           <el-tabs v-model="activeTab">
             <el-tab-pane label="基本资料" name="userinfo">
-              <userInfo :user="user" :oldUserJson="oldUserJson"/>
+              <userInfo :user="user" :old-user-json="oldUserJson" />
             </el-tab-pane>
             <el-tab-pane label="修改密码" name="resetPwd">
-              <resetPwd :user="user"/>
+              <resetPwd :user="user" />
             </el-tab-pane>
           </el-tabs>
         </el-card>

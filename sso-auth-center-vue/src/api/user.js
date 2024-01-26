@@ -34,7 +34,7 @@ export function listUser(query) {
 
 // 根据用户名或者手机号-模糊查询用户下拉列表
 export function listUserOption(keywords) {
-  if (null === keywords || undefined === keywords) {
+  if (keywords === null || undefined === keywords) {
     keywords = ''
   }
   return request({

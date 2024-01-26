@@ -5,23 +5,28 @@
       <el-breadcrumb-item>部门管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="app-container">
-      <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch">
+      <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true">
         <el-form-item label="部门名称" prop="deptNameLike">
           <el-input
-              v-model="queryParams.deptNameLike"
-              placeholder="请输入部门名称"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
+            v-model="queryParams.deptNameLike"
+            placeholder="请输入部门名称"
+            clearable
+            size="small"
+            @keyup.enter.native="handleQuery"
           />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-select v-model="queryParams.status" placeholder="状态" @keyup.enter.native="handleQuery"
-                     @change="handleQuery"
-                     size="small" style="width: 90px">
-            <el-option :key="-1" label="全部" :value="-1"/>
-            <el-option :key="0" label="正常" :value="0"/>
-            <el-option :key="1" label="停用" :value="1"/>
+          <el-select
+            v-model="queryParams.status"
+            placeholder="状态"
+            size="small"
+            style="width: 90px"
+            @keyup.enter.native="handleQuery"
+            @change="handleQuery"
+          >
+            <el-option :key="-1" label="全部" :value="-1" />
+            <el-option :key="0" label="正常" :value="0" />
+            <el-option :key="1" label="停用" :value="1" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -30,63 +35,70 @@
         </el-form-item>
       </el-form>
 
-
       <el-row>
         <el-form>
           <el-form-item style="margin: 0">
             <el-button
-                type="primary"
-                icon="el-icon-plus"
-                size="mini"
-                @click="handleAdd(null)" v-hasPermission="['dept:add']">新增
+              v-hasPermission="['dept:add']"
+              type="primary"
+              icon="el-icon-plus"
+              size="mini"
+              @click="handleAdd(null)"
+            >新增
             </el-button>
           </el-form-item>
         </el-form>
       </el-row>
 
       <el-table
-          border
-          v-loading="loading"
-          :data="deptList"
-          row-key="deptId"
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-        <el-table-column fixed prop="deptName" label="部门名称" min-width="180" show-overflow-tooltip></el-table-column>
+        v-loading="loading"
+        border
+        :data="deptList"
+        row-key="deptId"
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
+        <el-table-column fixed prop="deptName" label="部门名称" min-width="180" show-overflow-tooltip />
         <el-table-column prop="status" label="状态" align="center" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="scope.row.status === 0"> <el-tag type="success" size="mini">启用</el-tag></span>
             <span v-if="scope.row.status === 1"><el-tag type="danger" size="mini">停用</el-tag></span>
           </template>
         </el-table-column>
-        <el-table-column prop="sortNum" label="显示顺序" align="center" min-width="100"
-                         show-overflow-tooltip></el-table-column>
-        <el-table-column prop="createTime" min-width="165" label="创建时间" align="center"/>
-        <el-table-column prop="updateTime" min-width="165" label="修改时间" align="center"/>
+        <el-table-column
+          prop="sortNum"
+          label="显示顺序"
+          align="center"
+          min-width="100"
+          show-overflow-tooltip
+        />
+        <el-table-column prop="createTime" min-width="165" label="创建时间" align="center" />
+        <el-table-column prop="updateTime" min-width="165" label="修改时间" align="center" />
         <el-table-column fixed="right" label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-edit"
-                @click="handleUpdate(scope.row)"
-                v-hasPermission="['dept:update']"
+              v-hasPermission="['dept:update']"
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleUpdate(scope.row)"
             >修改
             </el-button>
             <el-button
-                v-if="scope.row.status===0"
-                size="mini"
-                type="text"
-                icon="el-icon-plus"
-                @click="handleAdd(scope.row)"
-                v-hasPermission="['dept:add']"
+              v-if="scope.row.status===0"
+              v-hasPermission="['dept:add']"
+              size="mini"
+              type="text"
+              icon="el-icon-plus"
+              @click="handleAdd(scope.row)"
             >新增
             </el-button>
             <el-button
-                v-if="scope.row.children.length<=0"
-                size="mini"
-                type="text"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
-                v-hasPermission="['dept:delete']"
+              v-if="scope.row.children.length<=0"
+              v-hasPermission="['dept:delete']"
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row)"
             >删除
             </el-button>
           </template>
@@ -99,13 +111,17 @@
           <el-row>
             <el-col :span="24">
               <el-form-item label="上级部门" prop="deptParentId">
-                <treeselect v-model="form.deptParentId" :options="deptOptions" :normalizer="normalizer"
-                            placeholder="选择上级部门"/>
+                <treeselect
+                  v-model="form.deptParentId"
+                  :options="deptOptions"
+                  :normalizer="normalizer"
+                  placeholder="选择上级部门"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="部门名称" prop="deptName">
-                <el-input v-model="form.deptName" placeholder="请输入部门名称"/>
+                <el-input v-model="form.deptName" placeholder="请输入部门名称" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -118,16 +134,19 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="显示顺序" prop="sortNum">
-                <el-input-number v-model="form.sortNum" controls-position="right" :min="0" :max="999999999"/>
+                <el-input-number v-model="form.sortNum" controls-position="right" :min="0" :max="999999999" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item label="备注" prop="remarks">
-                <el-input v-model="form.remarks" type="textarea"
-                          :autosize="{ minRows: 2, maxRows: 5}"
-                          placeholder="请输入内容"></el-input>
+                <el-input
+                  v-model="form.remarks"
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 5}"
+                  placeholder="请输入内容"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -202,11 +221,11 @@ export default {
   },
   created() {
     this.targetSysCode = sessionStorage.getItem('targetSysCode')
-    if (this.targetSysCode == null || '' === this.targetSysCode) {
+    if (this.targetSysCode == null || this.targetSysCode === '') {
       this.$router.push({ path: '/platformMgmt/index' })
       return
     }
-    //刷新左侧菜单栏
+    // 刷新左侧菜单栏
     this.reloadLeftMenu()
     this.targetSysName = sessionStorage.getItem('targetSysName')
     this.queryParams.sysCode = this.targetSysCode
@@ -221,12 +240,12 @@ export default {
         this.loading = false
       })
     },
-    //转换部门数据结构
+    // 转换部门数据结构
     normalizer(node) {
       if (node.children && !node.children.length) {
         delete node.children
       }
-      //不能选择自己为父级
+      // 不能选择自己为父级
       if (node.deptId === this.form.deptId) {
         node['isDisabled'] = true
       }
@@ -254,20 +273,20 @@ export default {
       }
       this.resetForm('form')
     },
-    //搜索按钮操作
+    // 搜索按钮操作
     handleQuery() {
       this.getList()
     },
-    //重置
+    // 重置
     resetQuery() {
       this.resetForm('queryForm')
       this.oldFormJson = ''
       this.handleQuery()
     },
-    //新增按钮操作
+    // 新增按钮操作
     handleAdd(row) {
       this.reset()
-      if (null !== row && row !== undefined) {
+      if (row !== null && row !== undefined) {
         this.form.deptParentId = row.deptId
       }
       this.open = true
@@ -277,7 +296,7 @@ export default {
         this.deptOptions = this.deptOptions.concat(this.handleTree(response.data, 'deptId', 'deptParentId'))
       })
     },
-    //修改按钮操作
+    // 修改按钮操作
     handleUpdate(row) {
       this.reset()
       listDeptOptionTree(this.queryParams).then(response => {
@@ -291,7 +310,7 @@ export default {
         this.title = '修改部门'
       })
     },
-    //提交按钮
+    // 提交按钮
     submitForm: function() {
       this.$refs['form'].validate(valid => {
         if (valid) {
@@ -320,7 +339,7 @@ export default {
         }
       })
     },
-    //删除按钮操作
+    // 删除按钮操作
     handleDelete(row) {
       this.$confirm('是否确认删除名称为"' + row.deptName + '"的部门?', '删除警告', {
         confirmButtonText: '确定',

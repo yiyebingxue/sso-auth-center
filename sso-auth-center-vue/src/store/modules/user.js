@@ -9,7 +9,7 @@ const getDefaultState = () => {
     avatar: '',
     roles: null,
     permissions: [],
-    //头部菜单(一级菜单)
+    // 头部菜单(一级菜单)
     menuList: [],
     menuMap: []
   }
@@ -62,39 +62,39 @@ const actions = {
     })
   },
   // 获取用户信息
-  GetInfo({ commit, state }) {
+  GetInfo({ commit, state }, query) {
     return new Promise((resolve, reject) => {
-      getUserInfo(state.token).then(res => {
+      getUserInfo(state.token, query.systemCode).then(res => {
         const user = res.data.user
         let avatar
 
-        //用户头像-若不存在设置默认头像
-        if (null == user.avatar || '' === user.avatar) {
+        // 用户头像-若不存在设置默认头像
+        if (user.avatar == null || user.avatar === '') {
           avatar = require('@/assets/image/profile.jpg')
         } else {
-          //如果是外链则不处理
+          // 如果是外链则不处理
           if (isExternal(user.avatar)) {
             avatar = user.avatar
           } else {
             avatar = process.env.VUE_APP_BASE_API + user.avatar
           }
         }
-        //角色数组
+        // 角色数组
         if (res.data.roleKeyList && res.data.roleKeyList.length > 0) {
           commit('SET_ROLES', res.data.roleKeyList)
         } else {
           commit('SET_ROLES', [])
         }
-        //权限数组
+        // 权限数组
         if (res.data.permissionList && res.data.permissionList.length > 0) {
           commit('SET_PERMISSIONS', res.data.permissionList)
         }
 
-        //菜单-数组
+        // 菜单-数组
         if (res.data.menuList && res.data.menuList.length > 0) {
           commit('SET_MENU_LIST', res.data.menuList)
-          let menuMap = new Map()
-          for (let i in res.data.menuList) {
+          const menuMap = new Map()
+          for (const i in res.data.menuList) {
             const menu = res.data.menuList[i]
             menuMap.set(menu.path, menu)
           }

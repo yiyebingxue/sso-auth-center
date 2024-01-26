@@ -30,8 +30,9 @@ export default {
   },
   methods: {
     clickLogo() {
-      window.open("https://blog.csdn.net/qq_38011415", "_blank");
-      //点击logo 跳转到首页 this.$router.push("/")
+      // window.open('https://blog.csdn.net/qq_38011415', '_blank')
+      // 点击logo 跳转到首页 this.$router.push("/")
+      // this.$router.push('/')
     }
   }
 }

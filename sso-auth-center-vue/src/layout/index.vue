@@ -2,12 +2,22 @@
   <div>
     <el-container>
       <el-aside width="auto">
-        <logo v-if="showLogo" :collapse="collapseFlag"/>
-        <el-menu v-if="isLeftMeuAlive" :default-active="leftMenuAlive" active-text-color="#333"
-                 :collapse="collapseFlag" router>
+        <logo v-if="showLogo" :collapse="collapseFlag" />
+        <el-menu
+          v-if="isLeftMeuAlive"
+          :default-active="leftMenuAlive"
+          active-text-color="#333"
+          :collapse="collapseFlag"
+          router
+        >
           <el-menu-item v-for="(item,i) in leftMenuList" :key="i" :index="item.path">
-            <svg-icon :iconClass="item.icon" aria-hidden="true" class="el-input__icon"
-                      style="margin-right: 5px" v-on="$listeners"/>
+            <svg-icon
+              :icon-class="item.icon"
+              aria-hidden="true"
+              class="el-input__icon"
+              style="margin-right: 5px"
+              v-on="$listeners"
+            />
             <span slot="title">{{ item.menuName }}</span>
           </el-menu-item>
         </el-menu>
@@ -15,34 +25,36 @@
 
       <el-container>
         <div v-if="leftMenuList.length>0" style="position: absolute;margin-top: 20px;">
-          <a class="el-icon-s-fold" style="color: white" v-if="!collapseFlag" @click="collapseClose"></a>
-          <a class="el-icon-s-unfold" style="color: white" v-if="collapseFlag" @click="collapseOpen"></a>
+          <a v-if="!collapseFlag" class="el-icon-s-fold" style="color: white" @click="collapseClose" />
+          <a v-if="collapseFlag" class="el-icon-s-unfold" style="color: white" @click="collapseOpen" />
         </div>
         <el-header>
           <div class="top-menu">
-            <el-menu :default-active="activeIndex"
-                     class="el-menu-top"
-                     mode="horizontal"
-                     @select="handleSelect"
-                     background-color="#0C2740"
-                     text-color="#fff"
-                     active-text-color="#e9eaec">
+            <el-menu
+              :default-active="activeIndex"
+              class="el-menu-top"
+              mode="horizontal"
+              background-color="#0C2740"
+              text-color="#fff"
+              active-text-color="#e9eaec"
+              @select="handleSelect"
+            >
               <el-menu-item v-for="(item,i) in headMenuList" :key="i" :index="item.path">
                 {{ item.menuName }}
               </el-menu-item>
             </el-menu>
           </div>
           <div class="header-right">
-            <div class="btn-fullscreen" @click="handleFullScreen" style="color: white">
+            <div class="btn-fullscreen" style="color: white" @click="handleFullScreen">
               <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                <i class="el-icon-rank"></i>
+                <i class="el-icon-rank" />
               </el-tooltip>
             </div>
             <el-dropdown>
-                  <span class="el-dropdown-link">
-                      <img class="user-img" :src="avatar" alt="">
-                      <span class="user-text" style="color: white;font-weight: bold;margin-left: 5px">{{ name }}</span>
-                  </span>
+              <span class="el-dropdown-link">
+                <img class="user-img" :src="avatar" alt="">
+                <span class="user-text" style="color: white;font-weight: bold;margin-left: 5px">{{ name }}</span>
+              </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="profileIndex">
                   <span>个人中心</span>
@@ -56,7 +68,7 @@
         </el-header>
         <el-main :class="{'main-body-left':mainBodyLeftIsActive}">
           <transition name="fade-transform" mode="out-in">
-            <router-view></router-view>
+            <router-view />
           </transition>
         </el-main>
         <!-- <el-footer>Footer</el-footer>-->
@@ -100,8 +112,8 @@ export default {
       return !this.sidebar.opened
     }
   },
-  //点击页面侧边栏重载功能的实现
-  //（该处提供了提供给后代组件的数据/方法）
+  // 点击页面侧边栏重载功能的实现
+  // （该处提供了提供给后代组件的数据/方法）
   provide() {
     return {
       reloadLeftMenu: this.reloadLeftMenu
@@ -121,37 +133,37 @@ export default {
       headMenuSet: [],
       leftMenuList: [],
       leftMenuSet: [],
-      //左侧菜单默认选中项
+      // 左侧菜单默认选中项
       leftMenuAlive: ''
     }
   },
   created() {
     this.logoImg = require('@/assets/image/profile.jpg')
-    if (null != store.getters.menuList && store.getters.menuList.length > 0) {
-      //头部菜单
+    if (store.getters.menuList != null && store.getters.menuList.length > 0) {
+      // 头部菜单
       this.headMenuList = store.getters.menuList
     }
     this.headMenuSet = new Set([])
-    for (let i in this.headMenuList) {
+    for (const i in this.headMenuList) {
       this.headMenuSet.add(this.headMenuList[i].path)
     }
     this.leftMenuList = []
     this.restActiveIndex()
   },
   methods: {
-    //左侧二级菜单载入
+    // 左侧二级菜单载入
     reloadLeftMenu() {
       if (this.headMenuSet.has(this.$route.path) && this.activeIndex !== this.$route.path) {
         this.activeIndex = this.$route.path
       }
-      if (null == store.getters.menuMap || store.getters.menuMap.size <= 0) {
+      debugger
+      if (store.getters.menuMap == null || store.getters.menuMap.size <= 0) {
         return
       }
-
       const menu = store.getters.menuMap.get(this.activeIndex)
       if (menu != null) {
         if (this.leftMenuList.length > 0) {
-            this.leftMenuAlive = this.$route.path
+          this.leftMenuAlive = this.$route.path
           return
         }
         if (menu.children.length > 0) {
@@ -201,21 +213,21 @@ export default {
       if (key === '' || key === null) {
         return
       }
-      if(this.$route.path === key){
+      if (this.$route.path === key) {
         return
       }
-      //如果是外链
+      // 如果是外链
       if (isExternal(key)) {
         const lastActiveIndex = sessionStorage.getItem('activeIndex')
-        //重新定位到上一次访问
-        if (null != lastActiveIndex) {
+        // 重新定位到上一次访问
+        if (lastActiveIndex != null) {
           this.$router.push(lastActiveIndex)
-          //新页面打开外链
+          // 新页面打开外链
           window.open(key)
-          //重新刷新页面
+          // 重新刷新页面
           window.location.reload()
         }
-        //新页面打开外链
+        // 新页面打开外链
         window.open(key)
         return
       }
@@ -242,7 +254,7 @@ export default {
         this.isLeftMeuAlive = true
       })
     },
-    //个人中心
+    // 个人中心
     profileIndex() {
       this.leftMenuList = []
       this.mainBodyLeftIsActive = true
@@ -251,7 +263,7 @@ export default {
     },
     // 全屏事件
     handleFullScreen() {
-      let element = document.documentElement
+      const element = document.documentElement
       if (this.fullscreen) {
         if (document.exitFullscreen) {
           document.exitFullscreen()

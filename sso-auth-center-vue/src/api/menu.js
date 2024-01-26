@@ -33,8 +33,6 @@ export function getMenuDetail(menuId) {
     method: 'get'
   })
 }
-
-
 // 新增菜单
 export function addMenu(data) {
   return request({

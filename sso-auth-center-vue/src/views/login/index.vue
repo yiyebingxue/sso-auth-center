@@ -6,39 +6,42 @@
       </div>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon"/>
+          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-            v-model="loginForm.password"
-            type="password"
-            auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin">
-          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon"/>
+          v-model="loginForm.password"
+          type="password"
+          auto-complete="off"
+          placeholder="密码"
+          @keyup.enter.native="handleLogin"
+        >
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
       <el-form-item prop="captchaCode">
         <el-input
-            v-model="loginForm.captchaCode"
-            auto-complete="off"
-            placeholder="验证码"
-            style="width: 63%"
-            @keyup.enter.native="handleLogin"
+          v-model="loginForm.captchaCode"
+          auto-complete="off"
+          placeholder="验证码"
+          style="width: 63%"
+          @keyup.enter.native="handleLogin"
         >
-          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon"/>
+          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
         <div class="login-code">
-          <img :src="captchaImageUrl" @click="getCaptchaImageUrl" class="login-code-img"/>
+          <img :src="captchaImageUrl" class="login-code-img" @click="getCaptchaImageUrl">
         </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button
-            :loading="loading"
-            size="medium"
-            type="primary"
-            style="width:100%;"
-            @click.native.prevent="handleLogin"
+          :loading="loading"
+          size="medium"
+          type="primary"
+          style="width:100%;"
+          @click.native.prevent="handleLogin"
         >
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
@@ -47,8 +50,11 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright ( @互通科技有限公司 ） All Rights Reserved. 备注: <a href="#"
-                                                         target="_blank" style="color:#20a0ff;">测试版本</a></span>
+      <span>Copyright ( @互通科技有限公司 ） All Rights Reserved. 备注: <a
+        href="#"
+        target="_blank"
+        style="color:#20a0ff;"
+      >测试版本</a></span>
     </div>
   </div>
 </template>
@@ -102,7 +108,7 @@ export default {
     this.getCookie()
   },
   methods: {
-    //获取验证码
+    // 获取验证码
     getCaptchaImageUrl() {
       getCaptchaImage().then(res => {
         this.captchaImageUrl = 'data:image/gif;base64,' + res.data.base64Img
@@ -143,17 +149,17 @@ export default {
             Cookies.remove('rememberMe')
           }
           this.$store.dispatch('user/Login', this.loginForm)
-              .then(() => {
-                let redirectUrl = this.$route.query.redirectUrl
-                if (null !== redirectUrl && '' !== redirectUrl && redirectUrl !== undefined) {
-                  window.location.href = redirectUrl + '?ssoToken=' + getToken()
-                } else {
-                  this.$router.push({ path: this.redirect || '/' })
-                }
-              }).catch(() => {
-            this.loading = false
-            this.getCaptchaImageUrl()
-          })
+            .then(() => {
+              const redirectUrl = this.$route.query.redirectUrl
+              if (redirectUrl !== null && redirectUrl !== '' && redirectUrl !== undefined) {
+                window.location.href = redirectUrl + '?ssoToken=' + getToken()
+              } else {
+                this.$router.push({ path: this.redirect || '/' })
+              }
+            }).catch(() => {
+              this.loading = false
+              this.getCaptchaImageUrl()
+            })
         }
       })
     }

@@ -18,7 +18,7 @@ import router from './router'
 import permission from './directive/permission'
 
 import './assets/icons' // ico
-import './permission'  // permission control
+import './permission' // permission control
 
 Vue.prototype.msgSuccess = function(msg) {
   this.$message({ showClose: true, message: msg, type: 'success' })

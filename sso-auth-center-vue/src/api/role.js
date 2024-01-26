@@ -8,7 +8,7 @@ export function listPage(query) {
   })
 }
 
-//下拉选项
+// 下拉选项
 export function listRoleOption(query) {
   return request({
     url: '/role/listOption',
@@ -60,5 +60,4 @@ export function removeUserRole(roleId, userId) {
     data: data
   })
 }
-
 

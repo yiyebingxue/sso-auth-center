@@ -16,10 +16,11 @@ export function login(username, password, captchaCode, requestId) {
 }
 
 // 获取用户详细信息
-export function getUserInfo() {
+export function getUserInfo(token, systemCode) {
   return request({
     url: '/getUserInfo',
-    method: 'get'
+    method: 'get',
+    params: { token, systemCode }
   })
 }
 

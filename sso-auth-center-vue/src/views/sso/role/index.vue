@@ -5,34 +5,39 @@
       <el-breadcrumb-item>角色管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="app-container">
-      <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true">
+      <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true">
         <el-form-item label="角色名称" prop="roleNameLike">
           <el-input
-              v-model="queryParams.roleNameLike"
-              placeholder="请输入角色名称"
-              clearable
-              size="small"
-              style="width: 180px"
-              @keyup.enter.native="handleQuery"
+            v-model="queryParams.roleNameLike"
+            placeholder="请输入角色名称"
+            clearable
+            size="small"
+            style="width: 180px"
+            @keyup.enter.native="handleQuery"
           />
         </el-form-item>
         <el-form-item label="角色Key" prop="roleKeyLike">
           <el-input
-              v-model="queryParams.roleKeyLike"
-              placeholder="请输入角色标识key"
-              clearable
-              size="small"
-              style="width: 160px"
-              @keyup.enter.native="handleQuery"
+            v-model="queryParams.roleKeyLike"
+            placeholder="请输入角色标识key"
+            clearable
+            size="small"
+            style="width: 160px"
+            @keyup.enter.native="handleQuery"
           />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-select v-model="queryParams.status" placeholder="状态" @keyup.enter.native="handleQuery"
-                     @change="handleQuery"
-                     size="small" style="width: 90px">
-            <el-option :key="-1" label="全部" :value="-1"/>
-            <el-option :key="0" label="正常" :value="0"/>
-            <el-option :key="1" label="停用" :value="1"/>
+          <el-select
+            v-model="queryParams.status"
+            placeholder="状态"
+            size="small"
+            style="width: 90px"
+            @keyup.enter.native="handleQuery"
+            @change="handleQuery"
+          >
+            <el-option :key="-1" label="全部" :value="-1" />
+            <el-option :key="0" label="正常" :value="0" />
+            <el-option :key="1" label="停用" :value="1" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -44,53 +49,53 @@
       <el-row>
         <el-form>
           <el-form-item style="margin: 0">
-            <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermission="['role:add']">
+            <el-button v-hasPermission="['role:add']" type="primary" icon="el-icon-plus" size="mini" @click="handleAdd">
               新增
             </el-button>
           </el-form-item>
         </el-form>
       </el-row>
 
-      <el-table border v-loading="loading" :data="roleList">
-        <el-table-column label="角色ID" align="center" prop="roleId" min-width="120" show-overflow-tooltip/>
-        <el-table-column label="角色名称" align="center" prop="roleName" min-width="150" show-overflow-tooltip/>
+      <el-table v-loading="loading" border :data="roleList">
+        <el-table-column label="角色ID" align="center" prop="roleId" min-width="120" show-overflow-tooltip />
+        <el-table-column label="角色名称" align="center" prop="roleName" min-width="150" show-overflow-tooltip />
         <el-table-column prop="status" label="状态" align="center" width="60" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="scope.row.status === 0"> <el-tag type="success" size="mini">启用</el-tag></span>
             <span v-if="scope.row.status === 1"><el-tag type="danger" size="mini">停用</el-tag></span>
           </template>
         </el-table-column>
-        <el-table-column label="角色key" align="center" prop="roleKey" min-width="150" show-overflow-tooltip/>
-        <el-table-column label="显示顺序" align="center" prop="sortNum" min-width="120" width="150" show-overflow-tooltip/>
-        <el-table-column label="用户数" align="center" prop="userCount" min-width="120" show-overflow-tooltip/>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="165" show-overflow-tooltip/>
-        <el-table-column label="修改时间" align="center" prop="updateTime" width="165" show-overflow-tooltip/>
+        <el-table-column label="角色key" align="center" prop="roleKey" min-width="150" show-overflow-tooltip />
+        <el-table-column label="显示顺序" align="center" prop="sortNum" min-width="120" width="150" show-overflow-tooltip />
+        <el-table-column label="用户数" align="center" prop="userCount" min-width="120" show-overflow-tooltip />
+        <el-table-column label="创建时间" align="center" prop="createTime" width="165" show-overflow-tooltip />
+        <el-table-column label="修改时间" align="center" prop="updateTime" width="165" show-overflow-tooltip />
         <el-table-column label="操作" fixed="right" align="center" width="180" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-edit"
-                @click="handleUpdate(scope.row)"
-                v-hasPermission="['role:update']"
+              v-hasPermission="['role:update']"
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleUpdate(scope.row)"
             >修改
             </el-button>
             <el-button
-                v-if="scope.row.userCount>0"
-                size="mini"
-                type="text"
-                icon="el-icon-view"
-                @click="gotoUserRole(scope.row)"
-                v-hasPermission="['user:listPage']"
+              v-if="scope.row.userCount>0"
+              v-hasPermission="['user:listPage']"
+              size="mini"
+              type="text"
+              icon="el-icon-view"
+              @click="gotoUserRole(scope.row)"
             >已关联用户
             </el-button>
             <el-button
-                v-if="scope.row.userCount==0"
-                size="mini"
-                type="text"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
-                v-hasPermission="['role:delete']"
+              v-if="scope.row.userCount==0"
+              v-hasPermission="['role:delete']"
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row)"
             >删除
             </el-button>
           </template>
@@ -98,11 +103,11 @@
       </el-table>
 
       <pagination
-          v-show="total>0"
-          :total="total"
-          :page.sync="queryParams.page"
-          :limit.sync="queryParams.pageSize"
-          @pagination="getList"
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.page"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
       />
 
       <!-- 添加或修改角色配置对话框 -->
@@ -111,12 +116,12 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="角色名称" prop="roleName">
-                <el-input v-model="form.roleName" placeholder="请输入角色名称"/>
+                <el-input v-model="form.roleName" placeholder="请输入角色名称" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="标识key" prop="roleKey">
-                <el-input v-model="form.roleKey" placeholder="请输入角色标识"/>
+                <el-input v-model="form.roleKey" placeholder="请输入角色标识" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -131,7 +136,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="角色顺序" prop="sortNum">
-                <el-input-number v-model="form.sortNum" controls-position="right" :min="0" :max="999999999"/>
+                <el-input-number v-model="form.sortNum" controls-position="right" :min="0" :max="999999999" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -141,20 +146,23 @@
             <el-checkbox v-model="menuCheckAll" @change="handleCheckedTreeConnect($event)">父子联动
             </el-checkbox>
             <el-tree
-                class="tree-border"
-                :data="menuOptions"
-                show-checkbox
-                ref="menu"
-                node-key="menuId"
-                :check-strictly="!menuCheckAll"
-                empty-text="加载中，请稍后"
-                :props="defaultProps"
-            ></el-tree>
+              ref="menu"
+              class="tree-border"
+              :data="menuOptions"
+              show-checkbox
+              node-key="menuId"
+              :check-strictly="!menuCheckAll"
+              empty-text="加载中，请稍后"
+              :props="defaultProps"
+            />
           </el-form-item>
           <el-form-item label="备注" prop="remarks">
-            <el-input v-model="form.remarks" type="textarea"
-                      :autosize="{ minRows: 2, maxRows: 5}"
-                      placeholder="请输入内容"></el-input>
+            <el-input
+              v-model="form.remarks"
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 5}"
+              placeholder="请输入内容"
+            />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -199,7 +207,7 @@ export default {
       openDataScope: false,
       menuExpand: false,
       menuNodeAll: false,
-      //选择框父子联动
+      // 选择框父子联动
       menuCheckAll: false,
       // 日期范围
       dateRange: [],
@@ -251,11 +259,11 @@ export default {
   },
   created() {
     this.targetSysCode = sessionStorage.getItem('targetSysCode')
-    if (this.targetSysCode == null || '' === this.targetSysCode) {
+    if (this.targetSysCode == null || this.targetSysCode === '') {
       this.$router.push({ path: '/platformMgmt/index' })
       return
     }
-    //刷新左侧菜单栏
+    // 刷新左侧菜单栏
     this.reloadLeftMenu()
     this.targetSysName = sessionStorage.getItem('targetSysName')
     this.queryParams.sysCode = this.targetSysCode
@@ -263,14 +271,14 @@ export default {
     this.getList()
   },
   methods: {
-    //查询角色列表
+    // 查询角色列表
     getList() {
       this.loading = true
       listPage(this.queryParams).then(response => {
-            this.roleList = response.data
-            this.total = response.total
-            this.loading = false
-          }
+        this.roleList = response.data
+        this.total = response.total
+        this.loading = false
+      }
       )
     },
     // 新增
@@ -280,7 +288,7 @@ export default {
       this.open = true
       this.title = '添加角色'
     },
-    //修改
+    // 修改
     handleUpdate(row) {
       this.reset()
       this.getMenuTreeOption()
@@ -289,16 +297,16 @@ export default {
         this.form = response.data
         this.oldFormJson = JSON.stringify(this.form)
         this.open = true
-        this.menuCheckAll=false;
-        //处理已经选中
+        this.menuCheckAll = false
+        // 处理已经选中
         this.$nextTick(() => {
           this.$refs.menu.setCheckedKeys(response.data.menuIdList)
-          this.menuCheckAll=true;
+          this.menuCheckAll = true
         })
         this.title = '修改角色'
       })
     },
-    //删除角色
+    // 删除角色
     handleDelete(row) {
       this.$confirm('是否确认删除名称为"' + row.roleName + '"的角色?', '删除警告', {
         confirmButtonText: '确定',
@@ -312,7 +320,7 @@ export default {
       }).catch(function() {
       })
     },
-    //查询菜单树选项
+    // 查询菜单树选项
     getMenuTreeOption() {
       listMenuOptionTree(this.sysCodeParams).then(response => {
         this.menuOptions = response.data
@@ -321,19 +329,19 @@ export default {
     // 所有菜单节点数据
     getMenuAllCheckedKeys() {
       // 目前被选中的菜单节点
-      let checkedKeys = this.$refs.menu.getHalfCheckedKeys()
+      const checkedKeys = this.$refs.menu.getHalfCheckedKeys()
       // 半选中的菜单节点
-      let halfCheckedKeys = this.$refs.menu.getCheckedKeys()
+      const halfCheckedKeys = this.$refs.menu.getCheckedKeys()
       checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
       return checkedKeys
     },
-    //提交按钮
+    // 提交按钮
     submitForm: function() {
       this.$refs['form'].validate(valid => {
         if (valid) {
           if (this.form.roleId !== undefined) {
             const menuIdList = this.getMenuAllCheckedKeys()
-            //排序
+            // 排序
             menuIdList.sort()
             this.form.menuIdList = menuIdList
             const newFormJson = JSON.stringify(this.form)
@@ -382,27 +390,27 @@ export default {
       if (this.$refs.menu !== undefined) {
         this.$refs.menu.setCheckedKeys([])
       }
-      this.menuExpand = false,
-          this.menuNodeAll = false,
-          this.form = {
-            sysCode: this.targetSysCode,
-            roleId: undefined,
-            roleName: undefined,
-            roleKey: undefined,
-            sortNum: 0,
-            status: 0,
-            menuIdList: [],
-            deptIds: [],
-            remarks: ''
-          }
+      this.menuExpand = false
+      this.menuNodeAll = false
+      this.form = {
+        sysCode: this.targetSysCode,
+        roleId: undefined,
+        roleName: undefined,
+        roleKey: undefined,
+        sortNum: 0,
+        status: 0,
+        menuIdList: [],
+        deptIds: [],
+        remarks: ''
+      }
       this.resetForm('form')
     },
-    //搜索按钮操作
+    // 搜索按钮操作
     handleQuery() {
       this.queryParams.page = 1
       this.getList()
     },
-    //重置按钮操作
+    // 重置按钮操作
     resetQuery() {
       this.dateRange = []
       this.resetForm('queryForm')
@@ -417,7 +425,7 @@ export default {
     },
     // 树权限（展开/折叠）
     handleCheckedTreeExpand(value) {
-      let treeList = this.menuOptions
+      const treeList = this.menuOptions
       for (let i = 0; i < treeList.length; i++) {
         this.$refs.menu.store.nodesMap[treeList[i].menuId].expanded = value
       }
@@ -428,7 +436,7 @@ export default {
     },
     // 树权限（父子联动）
     handleCheckedTreeConnect(value) {
-      this.menuCheckAll = value ? true : false
+      this.menuCheckAll = !!value
     }
   }
 }

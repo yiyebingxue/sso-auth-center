@@ -7,27 +7,27 @@ import { getToken } from '@/utils/token'
 // NProgress Configuration
 NProgress.configure({ showSpinner: false })
 
-//免登录白名单
+// 免登录白名单
 const whiteList = ['/login']
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
-    //has token
+    // has token
     if (to.path === '/login') {
-      let redirectUrl = to.query.redirectUrl
-      if (null !== redirectUrl && '' !== redirectUrl && redirectUrl !== undefined) {
+      const redirectUrl = to.query.redirectUrl
+      if (redirectUrl !== null && redirectUrl !== '' && redirectUrl !== undefined) {
         window.location.href = redirectUrl + '?ssoToken=' + getToken()
-      }else {
+      } else {
         next({ path: '/' })
         NProgress.done()
       }
     } else {
       if (store.getters.name === '') {
         // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('user/GetInfo').then(res => {
+        store.dispatch('user/GetInfo', to.query).then(res => {
           // 拉取user_info
-          const roles = res.data.roles
+          // const roles = res.data.roles
           next({ ...to, replace: true })
         })
           .catch(err => {

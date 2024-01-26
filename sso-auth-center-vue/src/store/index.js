@@ -8,7 +8,6 @@ import common from './modules/common'
 
 Vue.use(Vuex)
 
-
 // 这里放全局参数
 const store = new Vuex.Store({
   modules: {

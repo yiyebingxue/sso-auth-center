@@ -9,17 +9,17 @@
           <div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">
-                <svg-icon icon-class="sysCode"/>
+                <svg-icon icon-class="sysCode" />
                 系统编码
                 <div class="pull-right">{{ detailData.sysCode }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="sysName"/>
+                <svg-icon icon-class="sysName" />
                 平台名称
                 <div class="pull-right">{{ detailData.sysName }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="status"/>
+                <svg-icon icon-class="status" />
                 状态
                 <div class="pull-right">
                   <span v-if="detailData.status === 0"> <el-tag type="success" size="mini">启用</el-tag></span>
@@ -27,22 +27,22 @@
                 </div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="createBy"/>
+                <svg-icon icon-class="createBy" />
                 创建者
                 <div class="pull-right">{{ detailData.createBy }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="createTime"/>
+                <svg-icon icon-class="createTime" />
                 创建时间
                 <div class="pull-right">{{ detailData.createTime }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="createBy"/>
+                <svg-icon icon-class="createBy" />
                 修改者
                 <div class="pull-right">{{ detailData.updateBy }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="createTime"/>
+                <svg-icon icon-class="createTime" />
                 修改时间
                 <div class="pull-right">{{ detailData.updateTime }}</div>
               </li>
@@ -56,20 +56,36 @@
             <el-button icon="el-icon-back" size="small" @click="backRole">返回</el-button>
             <span>{{ detailData.sysName }} 管理员列表</span>
           </div>
-          <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+          <el-form ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
             <el-form-item label="" prop="usernameLike">
-              <el-input v-model="queryParams.usernameLike" placeholder="请输入用户名称" clearable size="small"
-                        style="width: 180px"
-                        @keyup.enter.native="handleQuery"/>
+              <el-input
+                v-model="queryParams.usernameLike"
+                placeholder="请输入用户名称"
+                clearable
+                size="small"
+                style="width: 180px"
+                @keyup.enter.native="handleQuery"
+              />
             </el-form-item>
             <el-form-item label="" prop="phoneLike">
-              <el-input v-model="queryParams.phoneLike" placeholder="请输入手机号码" clearable size="small"
-                        style="width: 180px" @keyup.enter.native="handleQuery"/>
+              <el-input
+                v-model="queryParams.phoneLike"
+                placeholder="请输入手机号码"
+                clearable
+                size="small"
+                style="width: 180px"
+                @keyup.enter.native="handleQuery"
+              />
             </el-form-item>
             <el-form-item label="" prop="realNameLike">
-              <el-input v-model="queryParams.realNameLike" placeholder="请输入真实姓名" clearable size="small"
-                        style="width: 180px"
-                        @keyup.enter.native="handleQuery"/>
+              <el-input
+                v-model="queryParams.realNameLike"
+                placeholder="请输入真实姓名"
+                clearable
+                size="small"
+                style="width: 180px"
+                @keyup.enter.native="handleQuery"
+              />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -80,46 +96,67 @@
           <el-row>
             <el-form>
               <el-form-item style="margin: 0">
-                <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"
-                           v-hasPermission="['systemMgmt:updateSystemMgmt']">新增管理员
+                <el-button
+                  v-hasPermission="['systemMgmt:updateSystemMgmt']"
+                  type="primary"
+                  icon="el-icon-plus"
+                  size="mini"
+                  @click="handleAdd"
+                >新增管理员
                 </el-button>
               </el-form-item>
             </el-form>
           </el-row>
 
-          <el-table border v-loading="loading" :data="userList">
-            <el-table-column fixed label="用户ID" align="center" prop="userId" min-width="100" show-overflow-tooltip/>
-            <el-table-column fixed label="用户名称" align="center" prop="username" min-width="120" how-overflow-tooltip/>
-            <el-table-column label="用户昵称" align="center" prop="nickName" min-width="120" show-overflow-tooltip/>
-            <el-table-column label="手机号码" align="center" prop="phone" min-width="120" show-overflow-tooltip/>
+          <el-table v-loading="loading" border :data="userList">
+            <el-table-column fixed label="用户ID" align="center" prop="userId" min-width="100" show-overflow-tooltip />
+            <el-table-column fixed label="用户名称" align="center" prop="username" min-width="120" how-overflow-tooltip />
+            <el-table-column label="用户昵称" align="center" prop="nickName" min-width="120" show-overflow-tooltip />
+            <el-table-column label="手机号码" align="center" prop="phone" min-width="120" show-overflow-tooltip />
             <el-table-column prop="relationStatus" label="管理员状态" align="center" width="100" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span v-if="scope.row.relationStatus === 0"> <el-tag type="success" size="mini">启用</el-tag></span>
                 <span v-if="scope.row.relationStatus === 1"><el-tag type="danger" size="mini">停用</el-tag></span>
               </template>
             </el-table-column>
-            <el-table-column label="创建者" align="center" prop="createBy" min-width="120" show-overflow-tooltip/>
-            <el-table-column label="创建时间" align="center" prop="createTime" min-width="165" show-overflow-tooltip/>
+            <el-table-column label="创建者" align="center" prop="createBy" min-width="120" show-overflow-tooltip />
+            <el-table-column label="创建时间" align="center" prop="createTime" min-width="165" show-overflow-tooltip />
             <el-table-column label="操作" fixed="right" align="center" width="150" class-name="small-padding fixed-width">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.relationStatus ===1" size="mini" type="text" icon="el-icon-open"
-                           @click="enableStatus(scope.row)">启用
+                <el-button
+                  v-if="scope.row.relationStatus ===1"
+                  size="mini"
+                  type="text"
+                  icon="el-icon-open"
+                  @click="enableStatus(scope.row)"
+                >启用
                 </el-button>
-                <el-button v-if="scope.row.relationStatus ===0" size="mini" type="text" icon="el-icon-turn-off"
-                           @click="disableStatus(scope.row)">停用
+                <el-button
+                  v-if="scope.row.relationStatus ===0"
+                  size="mini"
+                  type="text"
+                  icon="el-icon-turn-off"
+                  @click="disableStatus(scope.row)"
+                >停用
                 </el-button>
-                <el-button size="mini" type="text" icon="el-icon-delete"
-                           @click="removeUserRole(scope.row)">移除用户
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="removeUserRole(scope.row)"
+                >移除用户
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
 
-          <pagination v-show="total>0"
-                      :total="total"
-                      :page.sync="queryParams.page"
-                      :limit.sync="queryParams.pageSize"
-                      @pagination="getList"/>
+          <pagination
+            v-show="total>0"
+            :total="total"
+            :page.sync="queryParams.page"
+            :limit.sync="queryParams.pageSize"
+            @pagination="getList"
+          />
 
         </el-card>
 
@@ -133,19 +170,20 @@
           <el-col :span="24">
             <el-form-item label="用户" prop="userId">
               <el-select
-                  v-model="addForm.userId"
-                  filterable
-                  remote
-                  reserve-keyword
-                  placeholder="请选择用户"
-                  :remote-method="getUserOption"
-                  :loading="loading">
+                v-model="addForm.userId"
+                filterable
+                remote
+                reserve-keyword
+                placeholder="请选择用户"
+                :remote-method="getUserOption"
+                :loading="loading"
+              >
                 <el-option
-                    v-for="item in userOptionList"
-                    :key="item.userId"
-                    :label="item.username+'-'+ item.realName+ '('+ item.phone+')' "
-                    :value="item.userId">
-                </el-option>
+                  v-for="item in userOptionList"
+                  :key="item.userId"
+                  :label="item.username+'-'+ item.realName+ '('+ item.phone+')' "
+                  :value="item.userId"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -172,11 +210,10 @@
 <script>
 import { getDetailBySysCode } from '@/api/system'
 import { listUserOption } from '@/api/user'
-import { listPageSystemMgmt, addSystemMgmt, updateSystemMgmtStatus, removeUserSystemMgmt } from '@/api/systemMgmt'
-import { delRole } from '@/api/role'
+import { addSystemMgmt, listPageSystemMgmt, removeUserSystemMgmt, updateSystemMgmtStatus } from '@/api/systemMgmt'
 
 export default {
-  name: 'userRoleIndex',
+  name: 'UserRoleIndex',
   data() {
     return {
       // 遮罩层
@@ -189,11 +226,11 @@ export default {
       targetSysName: '',
       detailData: {},
       userOptionList: [],
-      //总条数
+      // 总条数
       total: 0,
-      //用户表格数据
+      // 用户表格数据
       userList: null,
-      //查询参数
+      // 查询参数
       queryParams: {
         sysCode: null,
         page: 1,
@@ -203,7 +240,7 @@ export default {
         realNameLike: null,
         nickNameLike: null
       },
-      //表单参数
+      // 表单参数
       addForm: {},
       // 表单校验
       rules: {
@@ -217,10 +254,10 @@ export default {
     }
   },
   created() {
-    if (this.targetSysCode == null || '' === this.targetSysCode) {
+    if (this.targetSysCode == null || this.targetSysCode === '') {
       this.targetSysCode = sessionStorage.getItem('targetSysCode')
     }
-    if (this.targetSysCode == null || '' === this.targetSysCode) {
+    if (this.targetSysCode == null || this.targetSysCode === '') {
       this.$router.push({ path: '/platformMgmt/index' })
       return
     }
@@ -231,24 +268,24 @@ export default {
   },
   methods: {
     getDetail() {
-      //若参数为空跳转回角色管理页面
+      // 若参数为空跳转回角色管理页面
       getDetailBySysCode(this.targetSysCode).then((response) => {
-            this.detailData = response.data
-          }
+        this.detailData = response.data
+      }
       )
     },
-    //查询用户列表
+    // 查询用户列表
     getList() {
       this.loading = true
       listPageSystemMgmt(this.queryParams).then(
-          (response) => {
-            this.userList = response.data
-            this.total = response.total
-            this.loading = false
-          }
+        (response) => {
+          this.userList = response.data
+          this.total = response.total
+          this.loading = false
+        }
       )
     },
-    //用户下拉选项
+    // 用户下拉选项
     getUserOption(query) {
       this.loading = true
       listUserOption(query).then((response) => {
@@ -256,14 +293,14 @@ export default {
         this.loading = false
       })
     },
-    //新增按钮操作
+    // 新增按钮操作
     handleAdd() {
       this.reset()
       this.open = true
       this.title = '添加管理员账号'
       this.getUserOption()
     },
-    //启用
+    // 启用
     enableStatus(row) {
       const status = 0
       updateSystemMgmtStatus(row.id, status).then(response => {
@@ -273,7 +310,7 @@ export default {
         }
       })
     },
-    //停用
+    // 停用
     disableStatus(row) {
       const status = 1
       this.$confirm('是否停用名称为"' + row.username + '"的管理员权限?', '提示', {
@@ -288,7 +325,7 @@ export default {
       }).catch(function() {
       })
     },
-    //提交按钮
+    // 提交按钮
     submitForm: function() {
       this.$refs['addForm'].validate(valid => {
         if (valid) {
@@ -302,7 +339,7 @@ export default {
         }
       })
     },
-    //移除用户-该系统管理员绑定关系
+    // 移除用户-该系统管理员绑定关系
     removeUserRole(row) {
       this.loading = true
       removeUserSystemMgmt(this.targetSysCode, row.userId).then(response => {
@@ -313,12 +350,12 @@ export default {
         }
       })
     },
-    //取消按钮
+    // 取消按钮
     cancel() {
       this.open = false
       this.reset()
     },
-    //表单重置
+    // 表单重置
     reset() {
       this.addForm = {
         sysCode: this.targetSysCode,
@@ -327,17 +364,17 @@ export default {
       }
       this.resetForm('addForm')
     },
-    //搜索
+    // 搜索
     handleQuery() {
       this.queryParams.page = 1
       this.getList()
     },
-    //重置
+    // 重置
     resetQuery() {
       this.resetForm('queryForm')
       this.handleQuery()
     },
-    //返回平台管理详情
+    // 返回平台管理详情
     backRole() {
       this.$router.push({
         path: '/platformMgmt/platformDetail'

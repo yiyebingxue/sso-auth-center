@@ -1,4 +1,4 @@
-﻿const baseURL = process.env.VUE_APP_BASE_API
+﻿// const baseURL = process.env.VUE_APP_BASE_API
 
 // 日期格式化
 export function parseTime(time, pattern) {
@@ -65,19 +65,19 @@ export function handleTree(data, id, parentId, children, rootId) {
   rootId = rootId || Math.min.apply(Math, data.map(item => {
     return item[parentId]
   })) || 0
-  //对源数据深度克隆
+  // 对源数据深度克隆
   const cloneData = JSON.parse(JSON.stringify(data))
-  //循环所有项
+  // 循环所有项
   const treeData = cloneData.filter(father => {
-    let branchArr = cloneData.filter(child => {
-      //返回每一项的子级数组
+    const branchArr = cloneData.filter(child => {
+      // 返回每一项的子级数组
       return father[id] === child[parentId]
     })
     branchArr.length > 0 ? father.children = branchArr : ''
-    //返回第一层
+    // 返回第一层
     return father[parentId] === rootId
   })
-  return treeData != '' ? treeData : data
+  return treeData !== '' ? treeData : data
 }
 
 import store from '@/store'
