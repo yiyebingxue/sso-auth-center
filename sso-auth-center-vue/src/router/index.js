@@ -104,6 +104,13 @@ export const constantRoutes = [
         name: 'user',
         component: () => import('@/views/sso/user/index'),
         meta: { title: '用户管理', icon: 'dept' }
+      },
+      {
+        path: 'userOnline/index',
+        name: 'userOnline',
+        component: () => import('@/views/sso/user/online/index'),
+        meta: { title: '在线用户', icon: '' },
+        hidden: true
       }
     ]
   },
@@ -193,20 +200,6 @@ export const constantRoutes = [
         name: 'logIndex',
         component: () => import('@/views/sso/log/index'),
         meta: { title: '日志', icon: '' },
-        hidden: true
-      }
-    ]
-  },
-  {
-    path: '/userOnline',
-    name: 'userOnline',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'userOnline',
-        component: () => import('@/views/sso/user/online/index'),
-        meta: { title: '在线用户', icon: '' },
         hidden: true
       }
     ]
